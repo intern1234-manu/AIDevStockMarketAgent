@@ -1,0 +1,32 @@
+{
+  "memory": {
+    "symbol": "MSFT"
+  },
+  "execution_history": [],
+  "task_queue": [
+    {
+      "task_id": "Q-1",
+      "title": "Fundamental review",
+      "description": "Evaluate the earnings quality and valuation thesis.",
+      "priority": "normal",
+      "context": {
+        "symbol": "MSFT"
+      },
+      "tags": [
+        "fundamental"
+      ]
+    },
+    {
+      "task_id": "Q-1",
+      "title": "Fundamental review",
+      "description": "Evaluate the earnings quality and valuation thesis.",
+      "priority": "normal",
+      "context": {
+        "symbol": "MSFT"
+      },
+      "tags": [
+        "fundamental"
+      ]
+    }
+  ]
+}

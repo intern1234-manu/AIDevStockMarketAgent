@@ -1,0 +1,99 @@
+{
+  "driver": {
+    "name": "StockPlannerDriver",
+    "role": "hub",
+    "responsibility": "Break down incoming goals into sub-tasks and assign them to specialized worker agents."
+  },
+  "workers": [
+    {
+      "name": "market-news-collector",
+      "role": "market-intelligence",
+      "responsibility": "Collect live or fallback market news and macro context relevant to the target stock."
+    },
+    {
+      "name": "company-performance-agent",
+      "role": "company-intelligence",
+      "responsibility": "Review the company’s 5-year performance, strategic plans, and forward-looking drivers without hardcoding a specific stock."
+    },
+    {
+      "name": "chart-analyzer",
+      "role": "technical",
+      "responsibility": "Assess price structure, momentum, support/resistance, and trend quality."
+    },
+    {
+      "name": "market-sentiment-analyzer",
+      "role": "sentiment",
+      "responsibility": "Interpret market mood, volatility regime, and broader sentiment trends."
+    },
+    {
+      "name": "history-analyzer",
+      "role": "analysis",
+      "responsibility": "Review historical performance, market regimes, and decision patterns."
+    },
+    {
+      "name": "fundamental-agent",
+      "role": "research",
+      "responsibility": "Assess business quality, valuation, and earnings quality."
+    },
+    {
+      "name": "technical-agent",
+      "role": "research",
+      "responsibility": "Assess technical setup and timing quality."
+    },
+    {
+      "name": "risk-sentiment-agent",
+      "role": "risk",
+      "responsibility": "Validate risk posture before the decision can proceed."
+    },
+    {
+      "name": "debate-controller",
+      "role": "review",
+      "responsibility": "Compare arguments and surface the strongest evidence."
+    },
+    {
+      "name": "master-agent",
+      "role": "approval",
+      "responsibility": "Decide whether the task passes, reduces, or vetoes the trade."
+    },
+    {
+      "name": "execution-agent",
+      "role": "execution",
+      "responsibility": "Prepare the broker-safe execution route and order plan."
+    },
+    {
+      "name": "stage-build-sequence",
+      "role": "planning",
+      "responsibility": "Map work into milestone-based build stages and rollout sequence."
+    },
+    {
+      "name": "environment-checks",
+      "role": "operations",
+      "responsibility": "Validate environment readiness, dependencies, infrastructure, and configuration."
+    },
+    {
+      "name": "paper-trading",
+      "role": "simulation",
+      "responsibility": "Validate order flow and risk logic in a paper-trading environment."
+    },
+    {
+      "name": "shadow-mode",
+      "role": "simulation",
+      "responsibility": "Test live-data decisions without placing real orders."
+    },
+    {
+      "name": "live-mode",
+      "role": "execution",
+      "responsibility": "Prepare and monitor a safe production rollout."
+    },
+    {
+      "name": "observability-and-logs",
+      "role": "monitoring",
+      "responsibility": "Ensure health checks, alerts, logs, and observability remain active."
+    },
+    {
+      "name": "model-diversity-checks",
+      "role": "quality",
+      "responsibility": "Confirm independent model usage and provider diversity."
+    }
+  ]
+}

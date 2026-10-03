@@ -1,0 +1,84 @@
+Hub-and-Spoke AI Agent System Report
+===================================
+
+Project overview
+----------------
+This repository implements a modular hub-and-spoke orchestration system for stock market analysis and trading workflows. The design separates a central driver/planner from specialist worker agents, each handling a defined part of the investment lifecycle. This keeps the system extensible: new workers can be added without rewriting the central flow.
+
+Core architecture
+-----------------
+The central planner is the StockPlannerDriver. It decides which workers are relevant to a task, chooses the execution mode, and routes tasks through ordered or parallel stages depending on dependencies and priority.
+
+The system is organized into the following layers:
+
+1. Planning layer
+   - LLMTaskPlanner attempts to use an OpenAI-compatible model when API configuration is available.
+   - If no API key is configured, it falls back to a deterministic heuristic planner.
+   - It routes work based on task metadata, state, keywords, and priority rules.
+
+2. Dependency graph layer
+   - The worker graph defines relationships between agents and enforces a dependency-aware execution order.
+   - Independent workers can run in parallel during research stages, while downstream risk and execution tasks remain sequential and protected by gating.
+
+3. Scheduler layer
+   - TaskScheduler decides whether work should run sequentially or in parallel based on worker set and business logic.
+   - Priority is assigned using an industry-style model: critical, high, medium, normal.
+
+4. Workflow engine
+   - WorkflowEngine submits tasks and monitors prerequisite completion before letting work proceed.
+   - It ensures the system does not run dependent tasks before their inputs are ready.
+
+5. Worker layer
+   - Specialized agents cover market news, chart analysis, sentiment analysis, historical review, risk review, debate, execution, observability, and environment checks.
+   - Each worker has memory and persistence support so task state and queue state survive restarts.
+
+Market-analysis flow
+---------------------
+The current flow is designed to mimic a realistic market intelligence and broker workflow:
+
+- Market news collection
+- Chart analysis
+- Sentiment analysis
+- Historical analysis
+- Fundamental/technical/model validation
+- Risk review
+- Debate/master approval
+- Execution and observability
+
+This ordering reflects how research is normally staged before broker-facing actions are permitted. It avoids executing trades before the market context, technical view, and risk posture are established.
+
+Parallel execution model
+------------------------
+The dependency graph supports parallel stages for independent workers that do not depend on each other. The core research stage can fan out to:
+
+- news
+- chart
+- sentiment
+
+These three workers can run concurrently because they contribute to a shared market-analysis bundle before history and risk checks. Once the analysis bundle is prepared, the downstream stages remain ordered and gated.
+
+Broker-safe gating
+------------------
+A key principle of the system is that broker execution is protected by downstream gates. Risk review, debate, and master approval are not treated as optional post-processing steps. They are required before a trade is submitted. This aligns with a safer industry-standard execution pattern where research, validation, approval, and execution are separated by deterministic checkpoints.
+
+Persistence and state management
+--------------------------------
+Workers inherit from a shared base agent that supports JSON-backed state persistence, memory writes, and queue operations. This moves the system away from purely in-memory task handling and makes worker state more resilient across restarts.
+
+Operational observations
+------------------------
+- The planner is intentionally LLM-first but falls back gracefully when no API key is configured.
+- The system handles both heuristic and LLM-based routing.
+- It supports a richer prompt and schema model than a basic queue-only system.
+- The architecture is useful for a hub-and-spoke multi-agent implementation focused on market understanding, decision making, and constrained execution.
+
+Validation status
+-----------------
+The current regression suite was run after the final dependency and execution ordering updates. Result:
+
+- 8 tests ran
+- Status: OK
+
+Conclusion
+-----------
+This project provides a practical multi-agent foundation for a stock trading system with layered planning, dependency-aware execution, and broker-safe gating. It is structured for future extension toward real market intelligence collection, stronger broker integration, and production-grade operational safety.
